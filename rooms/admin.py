@@ -6,6 +6,11 @@ class ItemAdmin(admin.ModelAdmin):
 
     """ Item Admin Definition """
 
+    list_display = ("name","used_by")
+
+    def used_by(self,obj):
+        return obj.rooms.count()
+
     pass
 
 @admin.register(models.Room)
@@ -30,7 +35,7 @@ class RoomAdmin(admin.ModelAdmin):
             "More About the Spaces",
             {
                 "classes": ("collapse",),
-                "fields":("facilities","house_rules")
+                "fields":("amenities","facilities","house_rules")
             },
         ),
         (
@@ -53,7 +58,9 @@ class RoomAdmin(admin.ModelAdmin):
         "check_out",
         "instant_book",
         "count_amenities",
-
+        "count_photos",
+        "total_rating",
+        
     )
 
     ordering = ("name","price","bedrooms")
@@ -76,7 +83,8 @@ class RoomAdmin(admin.ModelAdmin):
     def count_amenities(self, obj):
         return obj.amenities.count()
 
-    count_amenities.short_description = "hello sexy!"
+    def count_photos(self,obj):
+        return obj.photos.count()
 
     
 @admin.register(models.Photo)
